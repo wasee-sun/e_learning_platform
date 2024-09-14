@@ -62,23 +62,71 @@ class Course(models.Model):
     def __str__(self):
         return self.course_name
     
-# class course_material(models.Model):
-#     TYPE = [
-#         ('pdf', 'PDF'),
-#         ('video', 'Video'),
-#     ]
+class course_material(models.Model):
+    TYPE = [
+        ('pdf', 'PDF'),
+        ('video', 'Video'),
+    ]
     
-#     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
-#     material_type = models.CharField(
-#         max_length=5,
-#         choices=TYPE,
-#         default='pdf',
-#     )
-#     file_loc = models.
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    section_no = models.IntegerField(default=1)
+    section_name = models.CharField(max_length=100)
+    m_type = models.CharField(
+        max_length=5,
+        choices=TYPE,
+        default='pdf',
+    )
+    m_title = models.CharField(max_length=100)
+    file_loc = models.FileField(upload_to='media_files/')
+    duration = models.FloatField(blank=True, null=True)
+        
+    class Meta:
+        unique_together = ('course_id', 'section_no', 'm_title')
     
-#     def __str__(self):
-#         return self.material_name
+    def save(self, *args, **kwargs):
+        if self.m_type == 'video':
+            self.file_loc.upload_to = 'videos/'
+        else:
+            self.file_loc.upload_to = 'pdfs/'
+        
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.m_title
 
 class Cart(models.Model):
     s_user_name = models.ForeignKey(Student, on_delete=models.CASCADE)
     order_id = models.AutoField(primary_key=True)
+    
+    def __str__(self):
+        return self.order_id
+    
+class Digital_Wallet(models.Model):
+    s_user_name = models.ForeignKey(Student, on_delete=models.CASCADE)
+    card_name = models.CharField(max_length=100)
+    card_no = models.IntegerField()
+    exp_date = models.DateField()
+    cvc = models.IntegerField()
+    c_balance = models.FloatField(default=0.00)
+    
+    def __str__(self):
+        return self.card_name
+    
+class Transaction(models.Model):
+    order_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    t_id = models.AutoField(primary_key=True)
+    t_date = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.t_id
+    
+class Enroll(models.Model):
+    s_user_name = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    order_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    rating_no = models.IntegerField()
+    description = models.CharField(max_length=500)
+    
+    def __str__(self):
+        return f"{self.s_user_name} {self.course_id}"
