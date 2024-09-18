@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'codextra/home.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="card text-bg-dark">
@@ -9,4 +14,45 @@
       <p class="card-text"><small>Last updated 3 mins ago</small></p>
     </div> {% endcomment %}
 </div>
+<section class="popular-courses">
+  <h2>Popular Courses</h2>
+  <p>Learn the most relevant skills with business, creative, and tech courses - dozens of courses added each week.</p>
+  <div class="courses-container">
+      <div class="course-card">
+          <img src="../../media/course_images/Cs_Beginner.png" alt="Electronics Foundations">
+          <div class="course-info">
+              <h3>Electronics Foundations: Fundamentals</h3>
+              <p>1h 17m</p>
+              <span>14,584 viewers</span>
+          </div>
+      </div>
+
+      <div class="course-card">
+          <img src="" alt="Excel Lookup Functions">
+          <div class="course-info">
+              <h3>Excel: Lookup Functions in Depth</h3>
+              <p>1h 8m</p>
+              <span>1,173 viewers</span>
+          </div>
+      </div>
+
+      <div class="course-card">
+          <img src="" alt="Excel Data Visualization">
+          <div class="course-info">
+              <h3>Excel Data Visualization: Mastering 20+ Charts</h3>
+              <p>2h 23m</p>
+              <span>6,485 viewers</span>
+          </div>
+      </div>
+
+      <div class="course-card">
+          <img src="" alt="HTML Essential Training">
+          <div class="course-info">
+              <h3>HTML Essential Training</h3>
+              <p>2h 4m</p>
+              <span>12,876 viewers</span>
+          </div>
+      </div>
+  </div>
+</section>
 {% endblock %}
