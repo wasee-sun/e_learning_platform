@@ -84,3 +84,58 @@ body {
 .start-button:hover {
     background-color: #005c91;
 }
+
+.role-guides {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.role-guides h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.role-guides p {
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.roles-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.role-card {
+    background-color: #eef3f8;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.role-card:hover {
+    background-color: #dfe7ef;
+}
+
+.toggle-button {
+    background-color: #0073b1;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #005c91;
+}
