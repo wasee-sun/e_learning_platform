@@ -1,6 +1,7 @@
 # Create your models here.
 from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
+import os
 
 class User(models.Model):
     username = models.CharField(max_length=150, unique=True, primary_key=True)
@@ -49,6 +50,7 @@ class Course(models.Model):
     
     course_id = models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=100)
+    course_img = models.ImageField(upload_to='course_images/', blank=True, null=True)
     difficulty = models.CharField(
         max_length=15,
         choices=DIFFICULTY,
@@ -62,14 +64,14 @@ class Course(models.Model):
     def __str__(self):
         return self.course_name
     
-class course_material(models.Model):
+class CourseMaterial(models.Model):
     TYPE = [
         ('pdf', 'PDF'),
         ('video', 'Video'),
     ]
     
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
-    section_no = models.IntegerField(default=1)
+    section_no = models.IntegerField()
     section_name = models.CharField(max_length=100)
     m_type = models.CharField(
         max_length=5,
@@ -77,18 +79,20 @@ class course_material(models.Model):
         default='pdf',
     )
     m_title = models.CharField(max_length=100)
-    file_loc = models.FileField(upload_to='media_files/')
+    file_loc = models.FileField(upload_to='')  # Initially empty
     duration = models.FloatField(blank=True, null=True)
-        
+    
     class Meta:
-        unique_together = ('course_id', 'section_no', 'm_title')
+        constraints = [
+            models.UniqueConstraint(fields=['course_id', 'section_no', 'm_title'], name='unique_course_material')
+        ]
     
     def save(self, *args, **kwargs):
-        if self.m_type == 'video':
-            self.file_loc.upload_to = 'videos/'
-        else:
-            self.file_loc.upload_to = 'pdfs/'
-        
+        # Determine the folder based on m_type
+        if self.m_type == 'pdf':
+            self.file_loc.name = os.path.join('pdfs', os.path.basename(self.file_loc.name))
+        elif self.m_type == 'video':
+            self.file_loc.name = os.path.join('videos', os.path.basename(self.file_loc.name))
         super().save(*args, **kwargs)
     
     def __str__(self):

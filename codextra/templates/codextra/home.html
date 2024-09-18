@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'codextra/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="card text-bg-dark">
+    <img src="../../media/images/codextrbanner.png" class="card-img" alt="...">
+    {% comment %} <div class="card-img-overlay">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <p class="card-text"><small>Last updated 3 mins ago</small></p>
+    </div> {% endcomment %}
+</div>
+<br>
+<section class="popular-courses">
+  <h2>Popular Courses</h2>
+  <p>Learn the most relevant skills with business, creative, and tech courses - dozens of courses added each week.</p>
+  <div class="courses-container">
+      {% for course in courses %}
+        {% include "codextra/course.html" with course=course %}
+      {% endfor %}
+  </div>
+</section>
+<br>
+<section class="role-guides">
+    <h2>Categories</h2>
+    <div class="roles-container">
+        {% for category in categories %}
+            <div class="role-card">{{ category.cat_name }}</div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
